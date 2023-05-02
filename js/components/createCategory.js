@@ -46,16 +46,15 @@ export const createCategory = (app) => {
 		});
 		elementLi.append(elementBtn, btnEdit, btnDel);
 		
-
 		return elementLi;
 	}
 
 
 	const mount = (data) => {
 		categoryList.textContent = '';
-		app.append(category);
 		const cards = data.map(createCategoryCard);
 		categoryList.append(...cards);
+		app.append(category);
 	}
 
 	const unmount = () => {
