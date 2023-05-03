@@ -24,11 +24,11 @@ export const createEditCategory = (app) => {
 
 	const tableHeadCellMain = createElement('th', {
 		className: 'table__cell',
-		textContent: 'main',
+		textContent: 'front',
 	});
 	const tableHeadCellSecond = createElement('th', {
 		className: 'table__cell',
-		textContent: 'second',
+		textContent: 'back',
 	});
 	const tableHeadCellEmpty = createElement('th', {
 		className: 'table__cell',
