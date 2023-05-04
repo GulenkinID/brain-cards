@@ -84,6 +84,8 @@ const initApp = async () => {
 	categoryObj.categoryList.addEventListener('click', async ( { target } ) => {
 		const categoryItem = target.closest('.category__item');
 
+		
+
 		if (target.closest('.category__edit')) {
 			const dataCards = await fetchCards(categoryItem.dataset.id);
 			allSectionUnmount();
@@ -117,6 +119,15 @@ const initApp = async () => {
 			pairsObj.mount(dataCards);
 		}
 
+	});
+
+	editCategoryObj.btnCancel.addEventListener('click', () => {
+		if (confirm('Вы действительно хотите выйти без сохранения?')) {
+			renderIndex();
+			showAlert('Изменения не были сохранены');
+			return;
+		}
+		return;
 	});
 
 	pairsObj.btnReturn.addEventListener('click', renderIndex);

@@ -113,7 +113,15 @@ export const createEditCategory = (app) => {
 		const emptyRow = createTRCell(['', '']);
 
 		tbody.append(emptyRow);
-	})
+	});
+
+	// btnCancel.addEventListener('click', () => {
+	// 	if (confirm('Вы действительно хотите выйти без сохранения?')) {
+			
+	// 		return;
+	// 	}
+	// 	return console.log('no');
+	// });
 
 	const parseData = () => {
 		const cellsOne = document.querySelectorAll('.table__cell-one');
@@ -138,7 +146,6 @@ export const createEditCategory = (app) => {
 		if (btnSave.dataset.id) {
 			data.id = btnSave.dataset.id;
 		};
-
 
 		return data;
 	};
