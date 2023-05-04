@@ -1,5 +1,5 @@
 import { createElement } from "../helper/createElement.js"
-import { shuffle } from "../helper/shuffle.js";
+import { shuffleArr } from "../helper/shuffleArr.js";
 import { showAlert } from "./showAlert.js";
 
 export const createPairs = (app) => {
@@ -34,46 +34,50 @@ export const createPairs = (app) => {
 	container.append(btnReturn, btnCard);
 	pairs.append(container);
 
-	const cardContoler = (data) => {
-		let index = 0;
-		cardFront.textContent = data[index][0];
-		cardBack.textContent = data[index][1];
+	let dataCards = [];
 
-		const flipCard = () => {
-			btnCard.classList.add('card__item_flipped');
-			btnCard.removeEventListener('click', flipCard);
+	const flipCard = () => {
+		console.log(btnCard.index);
+		btnCard.classList.add('card__item_flipped');
+		btnCard.removeEventListener('click', flipCard);
+		setTimeout(() => {
+			btnCard.classList.remove('card__item_flipped');
 			setTimeout(() => {
-				btnCard.classList.remove('card__item_flipped');
-				setTimeout(() => {
-					index += 1;
-					if (index === data.length) {
-						cardFront.textContent = 'пары закончились';
-						showAlert('Вернёмся к категориям', 2000);
-						setTimeout(() => {
-							btnReturn.click();
-						}, 2000);
-						return;
-					}
-					cardFront.textContent = data[index][0];
-					cardBack.textContent = data[index][1];
+				btnCard.index += 1;
+				if (btnCard.index === dataCards.length) {
+					cardFront.textContent = 'пары закончились';
+					showAlert('Вернёмся к категориям', 2000);
 					setTimeout(() => {
-						btnCard.addEventListener('click', flipCard);
-					}, 200);
-				}, 100)
-			}, 1000);
-		};
+						btnReturn.click();
+					}, 2000);
+					return;
+				}
+				cardFront.textContent = dataCards[btnCard.index][0];
+				cardBack.textContent = dataCards[btnCard.index][1];
+				setTimeout(() => {
+					btnCard.addEventListener('click', flipCard);
+				}, 200);
+			}, 100)
+		}, 1000);
+	};
+
+	const cardContoler = (data) => {
+		dataCards = [...data];
+		btnCard.index = 0;
+		cardFront.textContent = data[btnCard.index][0];
+		cardBack.textContent = data[btnCard.index][1];
+
 		btnCard.addEventListener('click', flipCard);
 	};
 
 	const mount = (data) => {
 		app.append(pairs);
-		cardContoler(shuffle(data.pairs));
-		console.log('shuffle(data.pairs): ', shuffle(data.pairs));
-		console.log('data.pairs: ', data.pairs);
+		cardContoler(shuffleArr(data.pairs));
 	};
 
 	const unmount = () => {
 		pairs.remove();
+		btnCard.removeEventListener('click', flipCard);
 	};
 
 	return {

@@ -115,8 +115,35 @@ export const createEditCategory = (app) => {
 		tbody.append(emptyRow);
 	})
 
+	const parseData = () => {
+		const cellsOne = document.querySelectorAll('.table__cell-one');
+		const cellsTwo = document.querySelectorAll('.table__cell-two');
+
+		const data = {
+			pairs: [],
+		};
+
+		for (let i = 0; i < cellsOne.length; i += 1) {
+			const textOne = cellsOne[i].textContent.trim();
+			const textTwo = cellsTwo[i].textContent.trim();
+			if (textOne && textTwo) {
+				data.pairs.push([textOne, textTwo]);
+			};
+		};
+		
+		if (title.textContent.trim() && title.textContent !== TITLE) {
+			data.title = title.textContent.trim();
+		};
+
+		if (btnSave.dataset.id) {
+			data.id = btnSave.dataset.id;
+		};
+
+
+		return data;
+	};
+
 	const mount = (data = { title: TITLE, pairs: [] }) => {
-		console.log('data: ', data);
 		tbody.textContent = '';
 		title.textContent = data.title;
 
@@ -129,7 +156,9 @@ export const createEditCategory = (app) => {
 		const rows = data.pairs.map(createTRCell);
 		const emptyRow = createTRCell(['', '']);
 		tbody.append(...rows, emptyRow);
-		app.append(editCategory)
+
+		btnSave.dataset.id = data.id ? data.id : '';
+		app.append(editCategory);
 	};
 
 	const unmount = () => {
@@ -139,5 +168,8 @@ export const createEditCategory = (app) => {
 	return {
 		mount,
 		unmount,
+		parseData,
+		btnSave,
+		btnCancel,
 	};
 };
